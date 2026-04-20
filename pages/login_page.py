@@ -5,6 +5,7 @@ class LoginPage:
     PASSWORD_INPUT = (By.ID, "password")
     LOGIN_BUTTON = (By.ID, "login-button")
     PRODUCTS_TITLE = (By.CLASS_NAME, "title")
+    ERROR_MESSAGE = (By.CSS_SELECTOR, "h3[data-test='error']")
 
     def __init__(self, driver):
         self.driver = driver
@@ -19,3 +20,6 @@ class LoginPage:
     
     def get_page_title(self):
         return self.driver.find_element(*self.PRODUCTS_TITLE).text
+    
+    def get_error_message(self):
+        return self.driver.find_element(*self.ERROR_MESSAGE).text

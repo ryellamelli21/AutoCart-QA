@@ -4,17 +4,37 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 
 
-def get_driver(headless=False):
+# def get_driver(headless=False):
+#     options = Options()
+
+#     if headless:
+#         options.add_argument("--headless=new")
+
+#     options.add_argument("--start-maximized")
+#     options.add_argument("--remote-allow-origins=*")
+
+#     service = Service(ChromeDriverManager().install())
+
+#     driver = webdriver.Chrome(service=service, options=options)
+#     driver.implicitly_wait(10)
+#     return driver
+
+import os
+
+def get_driver():
     options = Options()
 
-    if headless:
+    if os.getenv("CI") == "true":
         options.add_argument("--headless=new")
 
     options.add_argument("--start-maximized")
+    options.add_argument("--disable-notifications")
     options.add_argument("--remote-allow-origins=*")
 
-    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(
+        service=Service(ChromeDriverManager().install()),
+        options=options
+    )
 
-    driver = webdriver.Chrome(service=service, options=options)
     driver.implicitly_wait(10)
     return driver
