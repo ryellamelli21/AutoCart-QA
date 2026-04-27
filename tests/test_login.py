@@ -25,7 +25,7 @@ def test_valid_login(driver):
         assert login_page.get_page_title() == "Products"
 
 
-# ❌ INVALID PASSWORD
+#  INVALID PASSWORD
 @allure.title("Invalid Password Test")
 @allure.feature("Login Feature")
 @allure.story("Invalid Login")

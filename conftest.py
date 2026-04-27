@@ -19,7 +19,7 @@ def driver(request):
 
         driver.save_screenshot(screenshot_path)
 
-        # 🔥 Attach to Allure
+        # Attach to Allure
         with open(screenshot_path, "rb") as f:
             allure.attach(
                 f.read(),
