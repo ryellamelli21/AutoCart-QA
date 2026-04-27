@@ -1,14 +1,26 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 
 class InventoryPage:
-    ADD_TO_CART_BUTTON =  (By.ID, "add-to-cart-sauce-labs-backpack")
+
+    ADD_BACKPACK = (By.ID, "add-to-cart-sauce-labs-backpack")
     CART_BADGE = (By.CLASS_NAME, "shopping_cart_badge")
 
     def __init__(self, driver):
         self.driver = driver
-    
+
     def add_backpack_to_cart(self):
-        self.driver.find_element(*self.ADD_TO_CART_BUTTON).click()
-    
+        wait = WebDriverWait(self.driver, 10)
+        add_btn = wait.until(
+            EC.element_to_be_clickable(self.ADD_BACKPACK)
+        )
+        add_btn.click()
+
     def get_cart_count(self):
-        return self.driver.find_element(*self.CART_BADGE).text
+        wait = WebDriverWait(self.driver, 10)
+        badge = wait.until(
+            EC.presence_of_element_located(self.CART_BADGE)
+        )
+        return badge.text

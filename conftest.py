@@ -2,12 +2,12 @@ import pytest
 import os
 from datetime import datetime
 from utils.driver_factory import get_driver
+import allure 
 
-
-@pytest.fixture
+@pytest.fixture(params=["chrome", "firefox"])
 def driver(request):
-    driver = get_driver()
-
+    browser = request.param
+    driver = get_driver(browser)
     yield driver
 
     if request.node.rep_call.failed:
@@ -15,12 +15,19 @@ def driver(request):
             os.makedirs("screenshots")
 
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        screenshot_name = f"screenshots/{request.node.name}_{timestamp}.png"
+        screenshot_path = f"screenshots/{request.node.name}_{timestamp}.png"
 
-        driver.save_screenshot(screenshot_name)
-        print(f"Screenshot saved: {screenshot_name}")
-    driver.quit()   
+        driver.save_screenshot(screenshot_path)
 
+        # 🔥 Attach to Allure
+        with open(screenshot_path, "rb") as f:
+            allure.attach(
+                f.read(),
+                name="Failure Screenshot",
+                attachment_type=allure.attachment_type.PNG
+            )
+
+    driver.quit()
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield

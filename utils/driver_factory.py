@@ -1,40 +1,37 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.options import Options
-
-
-# def get_driver(headless=False):
-#     options = Options()
-
-#     if headless:
-#         options.add_argument("--headless=new")
-
-#     options.add_argument("--start-maximized")
-#     options.add_argument("--remote-allow-origins=*")
-
-#     service = Service(ChromeDriverManager().install())
-
-#     driver = webdriver.Chrome(service=service, options=options)
-#     driver.implicitly_wait(10)
-#     return driver
-
 import os
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
-def get_driver():
-    options = Options()
 
-    if os.getenv("CI") == "true":
-        options.add_argument("--headless=new")
+def get_driver(browser="chrome"):
+    grid_value = os.environ.get("GRID")
+    print(f"GRID ENV VALUE: {grid_value}")
 
-    options.add_argument("--start-maximized")
-    options.add_argument("--disable-notifications")
-    options.add_argument("--remote-allow-origins=*")
+    use_grid = grid_value == "true"
 
-    driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()),
-        options=options
-    )
+    if use_grid:
+        print(f"Running on Selenium Grid with {browser}...")
 
-    driver.implicitly_wait(10)
+        if browser == "firefox":
+            options = FirefoxOptions()
+        else:
+            options = ChromeOptions()
+
+        driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            options=options
+        )
+
+    else:
+        print(f"Running locally with {browser}...")
+
+        if browser == "firefox":
+            options = FirefoxOptions()
+            driver = webdriver.Firefox(options=options)
+        else:
+            options = ChromeOptions()
+            driver = webdriver.Chrome(options=options)
+
+    driver.maximize_window()
     return driver
