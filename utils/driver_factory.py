@@ -1,37 +1,61 @@
 import os
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+
+# Execution mode:
+# local = local machine
+# grid = selenium grid/docker
+SELENIUM_MODE = os.getenv("SELENIUM_MODE", "local").lower()
+
+GRID_URL = os.getenv("GRID_URL", "http://localhost:4444/wd/hub")
 
 
-def get_driver(browser="chrome"):
-    grid_value = os.environ.get("GRID")
-    print(f"GRID ENV VALUE: {grid_value}")
+def get_driver(browser):
+    browser = browser.lower()
 
-    use_grid = grid_value == "true"
+    # ==========================
+    # CHROME
+    # ==========================
+    if browser == "chrome":
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--start-maximized")
+        chrome_options.add_argument("--disable-notifications")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--no-sandbox")
 
-    if use_grid:
-        print(f"Running on Selenium Grid with {browser}...")
-
-        if browser == "firefox":
-            options = FirefoxOptions()
+        if SELENIUM_MODE == "grid":
+            driver = webdriver.Remote(
+                command_executor=GRID_URL,
+                options=chrome_options
+            )
         else:
-            options = ChromeOptions()
+            driver = webdriver.Chrome(
+                service=ChromeService(ChromeDriverManager().install()),
+                options=chrome_options
+            )
 
-        driver = webdriver.Remote(
-            command_executor="http://localhost:4444/wd/hub",
-            options=options
-        )
+    # ==========================
+    # FIREFOX
+    # ==========================
+    elif browser == "firefox":
+        firefox_options = webdriver.FirefoxOptions()
+
+        if SELENIUM_MODE == "grid":
+            driver = webdriver.Remote(
+                command_executor=GRID_URL,
+                options=firefox_options
+            )
+        else:
+            driver = webdriver.Firefox(
+                service=FirefoxService(GeckoDriverManager().install()),
+                options=firefox_options
+            )
 
     else:
-        print(f"Running locally with {browser}...")
+        raise ValueError(f"Unsupported browser: {browser}")
 
-        if browser == "firefox":
-            options = FirefoxOptions()
-            driver = webdriver.Firefox(options=options)
-        else:
-            options = ChromeOptions()
-            driver = webdriver.Chrome(options=options)
-
-    driver.maximize_window()
+    driver.implicitly_wait(5)
     return driver

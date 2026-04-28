@@ -14,13 +14,13 @@ class InventoryPage:
     def add_backpack_to_cart(self):
         wait = WebDriverWait(self.driver, 10)
         add_btn = wait.until(
-            EC.element_to_be_clickable(self.ADD_BACKPACK)
+            EC.element_to_be_clickable((By.ID, "add-to-cart-sauce-labs-backpack"))
         )
         add_btn.click()
 
     def get_cart_count(self):
         wait = WebDriverWait(self.driver, 10)
         badge = wait.until(
-            EC.presence_of_element_located(self.CART_BADGE)
+            EC.visibility_of_element_located((By.CLASS_NAME, "shopping_cart_badge"))
         )
         return badge.text

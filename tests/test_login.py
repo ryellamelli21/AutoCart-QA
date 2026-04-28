@@ -2,11 +2,13 @@ import allure
 from pages.login_page import LoginPage
 from config.config import BASE_URL, USERNAME, PASSWORD
 from utils.logger import get_logger
+import pytest
 
 logger = get_logger()
 
 
 #  VALID LOGIN
+@pytest.mark.parametrize("driver", ["chrome", "firefox"], indirect = True)
 @allure.title("Valid Login Test")
 @allure.description("Verify user can login with valid credentials")
 @allure.severity(allure.severity_level.CRITICAL)
@@ -26,6 +28,7 @@ def test_valid_login(driver):
 
 
 #  INVALID PASSWORD
+@pytest.mark.parametrize("driver", ["chrome", "firefox"], indirect = True)
 @allure.title("Invalid Password Test")
 @allure.feature("Login Feature")
 @allure.story("Invalid Login")
@@ -43,6 +46,7 @@ def test_invalid_password(driver):
 
 
 #  INVALID USERNAME
+@pytest.mark.parametrize("driver", ["chrome", "firefox"], indirect = True)
 @allure.title("Invalid Username Test")
 @allure.feature("Login Feature")
 @allure.story("Invalid Login")
@@ -60,6 +64,7 @@ def test_invalid_username(driver):
 
 
 #  EMPTY CREDENTIALS
+@pytest.mark.parametrize("driver", ["chrome", "firefox"], indirect = True)
 @allure.title("Empty Credentials Test")
 @allure.feature("Login Feature")
 @allure.story("Invalid Login")
