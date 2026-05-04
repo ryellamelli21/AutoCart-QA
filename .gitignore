@@ -1,9 +1,10 @@
+.env
+available
+use
 venv/
 __pycache__/
-*.pyc
-.pytest_cache/
 reports/
 screenshots/
 allure-results/
 allure-report/
-install.ps1
+.pytest_cache/

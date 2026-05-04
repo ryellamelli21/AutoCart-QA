@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from utils.helpers import close_obstructive_elements
 
 class LoginPage:
     USERNAME_INPUT = (By.ID, "user-name")
@@ -17,7 +18,9 @@ class LoginPage:
         self.driver.find_element(*self.USERNAME_INPUT).send_keys(username)
         self.driver.find_element(*self.PASSWORD_INPUT).send_keys(password)
         self.driver.find_element(*self.LOGIN_BUTTON).click()
-    
+
+        close_obstructive_elements(self.driver)
+
     def get_page_title(self):
         return self.driver.find_element(*self.PRODUCTS_TITLE).text
     
