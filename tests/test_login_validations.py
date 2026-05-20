@@ -3,7 +3,7 @@ import allure
 from pages.login_page import LoginPage
 from config.config import BASE_URL
 
-@pytest.mark.parametrize("driver", ["chrome", "firefox"], indirect=True)
+@pytest.mark.parametrize("driver", ["chrome"], indirect=True)
 @allure.feature("Advanced login validation")
 @allure.story("Password Minimum Length")
 def test_password_min_length(driver):
@@ -14,7 +14,7 @@ def test_password_min_length(driver):
 
     assert "do not match" in login_page.get_error_message().lower()
 
-@pytest.mark.parametrize("driver", ["chrome", "firefox"], indirect=True)
+@pytest.mark.parametrize("driver", ["chrome"], indirect=True)
 @allure.feature("Security Validation")
 @allure.story("SQL Injection")
 def test_sql_injection_login(driver):

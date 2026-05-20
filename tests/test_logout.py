@@ -4,7 +4,7 @@ from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
 from config.config import BASE_URL, USERNAME, PASSWORD
 
-@pytest.mark.parametrize("driver", ["chrome","firefox"], indirect=True)
+@pytest.mark.parametrize("driver", ["chrome", "firefox"], indirect=True)
 @allure.feature("Logout")
 @allure.story("Valid Logout")
 def test_logout(driver):

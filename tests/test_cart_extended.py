@@ -4,7 +4,7 @@ from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
 from config.config import BASE_URL, USERNAME, PASSWORD
 
-@pytest.mark.parametrize("driver", ["chrome", 'firefox'], indirect=True)
+@pytest.mark.parametrize("driver", ["chrome", "firefox"], indirect=True)
 @allure.feature("Extended Cart")
 @allure.story("Add Multiple Products")
 def test_add_multiple_products(driver):

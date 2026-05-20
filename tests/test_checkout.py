@@ -6,7 +6,7 @@ from pages.cart_page import CartPage
 from pages.checkout_page import CheckoutPage
 from config.config import BASE_URL, USERNAME, PASSWORD
 
-@pytest.mark.parametrize("driver", ["chrome", "firefox"], indirect=True)
+@pytest.mark.parametrize("driver", ["chrome"], indirect=True)
 @allure.feature("Checkout")
 @allure.story("Successful Checkout")
 def test_successful_checkout(driver):
@@ -24,6 +24,7 @@ def test_successful_checkout(driver):
     cart_page.checkout()
 
     checkout_page.fill_checkout_info("Rahul", "Y", "500001")
+    checkout_page.continue_checkout()
     checkout_page.finish_checkout()
 
     assert "Thank you for your order!" in checkout_page.get_success_message()

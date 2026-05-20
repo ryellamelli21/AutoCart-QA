@@ -3,8 +3,6 @@ import allure
 
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
-from pages.cart_page import CartPage
-from pages.checkout_page import CheckoutPage
 from config.config import BASE_URL, USERNAME, PASSWORD
 
 @pytest.mark.parametrize("driver", ["chrome", "firefox"], indirect=True)
@@ -13,8 +11,6 @@ from config.config import BASE_URL, USERNAME, PASSWORD
 def test_session_security_flow(driver):
     login_page = LoginPage(driver)
     inventory_page = InventoryPage(driver)
-    # cart_page = CartPage(driver)
-    # checkout_page = CheckoutPage(driver)
 
     #Step 1: Login
     login_page.open(BASE_URL)

@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from utils.helpers import close_obstructive_elements
 from selenium.webdriver.support import expected_conditions as EC
+from utils.helpers import safe_click, safe_send_keys, close_obstructive_elements
 
 class LoginPage:
     USERNAME_INPUT = (By.ID, "user-name")
@@ -12,31 +12,18 @@ class LoginPage:
 
     def __init__(self, driver):
         self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        self.wait = WebDriverWait(driver, 5)
 
     def open(self, url):
         self.driver.get(url)
-    
+
     def login(self, username, password):
-        username_field = self.wait.until(
-            EC.visibility_of_element_located(self.USERNAME_INPUT)
-        )
-
-        password_field = self.wait.until(
-            EC.visibility_of_element_located(self.PASSWORD_INPUT)
-        )
-
-        username_field.clear()
-        password_field.clear()
-
-        username_field.send_keys(username)
-        password_field.send_keys(password)
-
-        self.wait.until(
-            EC.element_to_be_clickable(self.LOGIN_BUTTON)
-        ).click()
-
         close_obstructive_elements(self.driver)
+
+        safe_send_keys(self.driver, self.USERNAME_INPUT, username)
+        safe_send_keys(self.driver, self.PASSWORD_INPUT, password)
+
+        safe_click(self.driver, self.LOGIN_BUTTON)
 
     def get_page_title(self):
         return self.driver.find_element(*self.PRODUCTS_TITLE).text

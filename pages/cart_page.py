@@ -1,21 +1,21 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from utils.helpers import safe_click
 
 
 class CartPage:
     def __init__(self, driver):
         self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        self.wait = WebDriverWait(driver, 5)
 
         self.checkout_button = (By.ID, "checkout")
         self.cart_items = (By.CLASS_NAME, "cart_item")
         self.continue_shopping_button = (By.ID, "continue-shopping")
 
     def checkout(self):
-        self.wait.until(
-            EC.element_to_be_clickable(self.checkout_button)
-        ).click()
+        safe_click(self.driver, self.checkout_button)
+
     def remove_product(self, product_name):
         product_ids = {
             "Sauce Labs Backpack" : "remove-sauce-labs-backpack",

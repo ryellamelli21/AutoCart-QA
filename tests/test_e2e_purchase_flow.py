@@ -28,6 +28,7 @@ def test_complete_user_purchase_flow(driver):
     cart_page.checkout()
 
     checkout_page.fill_checkout_info("Rahul", "QA", "534301")
+    checkout_page.continue_checkout()
     checkout_page.finish_checkout()
 
     assert "Thank you for your order!" in checkout_page.get_success_message()

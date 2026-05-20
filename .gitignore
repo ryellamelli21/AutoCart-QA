@@ -1,10 +1,49 @@
-.env
-available
-use
-venv/
+# -----------------------------
+# Python
+# -----------------------------
 __pycache__/
-reports/
-screenshots/
+*.pyc
+*.pyo
+*.pyd
+
+# -----------------------------
+# Virtual Environment
+# -----------------------------
+venv/
+.env/
+
+# -----------------------------
+# Pytest
+# -----------------------------
+.pytest_cache/
+htmlcov/
+.coverage
+
+# -----------------------------
+# Allure Reports
+# -----------------------------
 allure-results/
 allure-report/
-.pytest_cache/install.ps1
+
+# -----------------------------
+# Test Reports & Screenshots
+# -----------------------------
+reports/
+screenshots/
+
+# -----------------------------
+# IDE Files
+# -----------------------------
+.vscode/
+.idea/
+
+# -----------------------------
+# OS Files
+# -----------------------------
+.DS_Store
+Thumbs.db
+
+# -----------------------------
+# Logs
+# -----------------------------
+*.log

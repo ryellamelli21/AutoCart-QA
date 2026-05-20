@@ -1,6 +1,5 @@
 import pytest
 import allure
-
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
 from pages.cart_page import CartPage
@@ -40,6 +39,7 @@ def test_invalid_login_recovery_purchase(driver):
 
     #Step 6: Fill Details
     checkout_page.fill_checkout_info("Rahul", "Recovery", "500001")
+    checkout_page.continue_checkout()
     checkout_page.finish_checkout()
 
     #Step 7: Verify Success

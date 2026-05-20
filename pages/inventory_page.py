@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from utils.helpers import safe_click
 from utils.helpers import close_obstructive_elements
 
 
@@ -9,7 +10,7 @@ class InventoryPage:
 
     def __init__(self, driver):
         self.driver = driver
-        self.wait = WebDriverWait(driver, 15)
+        self.wait = WebDriverWait(driver, 5)
 
         #locators
         self.backpack_add_button = (By.ID, "add-to-cart-sauce-labs-backpack")
@@ -25,14 +26,7 @@ class InventoryPage:
         self.backpack_remove_button = (By.ID, "remove-sauce-labs-backpack")
 
     def add_backpack_to_cart(self):
-        close_obstructive_elements(self.driver)
-        self.wait.until(
-            EC.visibility_of_element_located(self.backpack_add_button)
-        )
-
-        self.wait.until(
-            EC.element_to_be_clickable(self.backpack_add_button)
-        ).click()
+        safe_click(self.driver, self.backpack_add_button)
 
     def add_bike_light_to_cart(self):
         self.wait.until(
@@ -40,9 +34,7 @@ class InventoryPage:
         ).click()
 
     def go_to_cart(self):
-        self.wait.until(
-            EC.element_to_be_clickable(self.cart_icon)
-        ).click()
+        safe_click(self.driver, self.cart_icon)
 
     def get_cart_count(self):
         return self.wait.until(
